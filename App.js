@@ -1,21 +1,33 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { useFonts } from 'expo-font';
+import Router from './navigation/Router';
+import { ThemeContext } from './context/ThemeProvider';
 
 export default function App() {
+
+  const [theme, setTheme] = useState("dark");
+
+  const data = {
+    theme,
+    setTheme,
+  }
+
+  const [loaded] = useFonts({
+    'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+    'Poppins-SemiBold': require('./assets/fonts/Poppins-SemiBold.ttf'),
+    'Poppins-Light': require('./assets/fonts/Poppins-Light.ttf'),
+  })
+
+  if (!loaded) {
+    return null;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ThemeContext.Provider value={data}>
+      <Router />
+    </ThemeContext.Provider>
+
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
